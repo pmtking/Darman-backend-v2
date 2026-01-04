@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext", // برای هماهنگی کامل با Node.js مدرن
+    "rootDir": "./src",             // منبع کدهای تو
+    "outDir": "./dist",            // خروجی نهایی برای سرور
+    
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "moduleDetection": "force",
+    
+    // این بخش برای کار با Prisma و API Manager ضروری است
+    "esModuleInterop": true,         
+    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": true,   // اگر بعداً خواستی از NestJS یا ابزارهای مشابه استفاده کنی
+    "experimentalDecorators": true,
+    
+    "types": ["node"] // حتما این را اضافه کن
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

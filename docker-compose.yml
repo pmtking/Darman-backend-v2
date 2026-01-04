@@ -1,0 +1,55 @@
+services:
+  # --- Database Layer ---
+  postgres:
+    image: postgres:15-alpine
+    container_name: darman_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: darman_v2
+    ports:
+      - "2545:5432" # پورت ۲۵۴۵ احتمال تداخل بسیار کمی در ویندوز دارد
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d darman_v2"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Cache Layer ---
+  redis:
+    image: redis:7-alpine
+    container_name: darman_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Application Layer ---
+  # این بخش را فعلاً کامنت کردم تا بتوانید دیتابیس را بالا بیاورید و اسکیما را تست کنید
+  # core-service:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/core-service/Dockerfile
+  #   container_name: darman_backend
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ./apps/core-service/.env
+  #   environment:
+  #     - DATABASE_URL=postgresql://admin:securepassword@postgres:5432/darman_v2
+  #   ports:
+  #     - "3000:3000"
+
+volumes:
+  postgres_data:
+    driver: local

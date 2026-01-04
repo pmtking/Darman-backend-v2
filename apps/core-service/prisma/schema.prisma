@@ -1,0 +1,66 @@
+// فایل نهایی: prisma/schema.prisma
+
+generator client {
+  provider   = "prisma-client-js"
+  // engineType = "library"
+  previewFeatures = ["driverAdapters"] // این خط بسیار مهم است
+}
+datasource db {
+  provider = "postgresql" 
+  
+  
+}
+
+enum Role {
+  DOCTOR
+  NURSE
+  RESEPTION
+  MANAGER
+  ADMIN
+  SERVICE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum SalaryType {
+  FIXED
+  PERCENTAGE
+}
+
+model Personnel {
+  id           Int           @id @default(autoincrement())
+  name         String
+  nationalId   String        @unique
+  password     String
+  phone        String        @unique
+  gender       Gender?
+  role         Role
+  salaryType   SalaryType    @default(FIXED)
+  isActive     Boolean       @default(true)
+  hireAt       DateTime      @default(now())
+  lastLoginAt  DateTime?
+  shifts       Shift[]
+  performances Performance[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Shift {
+  id           String    @id @default(uuid())
+  personnelId  Int
+  personnel    Personnel @relation(fields: [personnelId], references: [id])
+  startTime    DateTime  @default(now()) // پیشنهادی: زمان شروع شیفت
+  endTime      DateTime? // پیشنهادی: زمان پایان شیفت
+}
+
+model Performance {
+  id           String    @id @default(uuid())
+  personnelId  Int
+  personnel    Personnel @relation(fields: [personnelId], references: [id])
+  score        Int       @default(0)   // پیشنهادی: امتیاز عملکرد
+  description  String?                 // پیشنهادی: توضیحات عملکرد
+  createdAt    DateTime  @default(now())
+}
