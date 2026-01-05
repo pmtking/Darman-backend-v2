@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 // --- ۲. مسیرهای اصلی اپلیکیشن ---
-app.use('/api', router);
+app.use('/', router);
 
 // --- ۳. مسیر تست سلامت ---
 app.get('/health', (req, res) => {

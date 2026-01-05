@@ -24,25 +24,28 @@ export class PersonnelService {
             }
         })
     } catch (error:any) {
-         
+         throw new Error("Personnel Creation Failed: " + error.message);
     }
     }
 
     // دریافت لیست پرسنل (بدون نمایش پسورد)
-    static async getAll() {
+    static async getAllPersonnel() {
         return await db.personnel.findMany({
-            select: {
-                id: true,
-                name: true,
-                nationalId: true,
-                role: true,
-                phone: true,
-                isActive: true,
-                createdAt: true
+            orderBy:{ createdAt:'desc' },
+            select:{
+                id:true,
+                name:true,
+                nationalId:true,
+                phone:true,
+                role:true,
             }
-        });
+        })
     }
 
     // پیدا کردن یک پرسنل خاص برای لاگین
-    static async findByNationalId(nationalId: string) {
-        return await db.personn
+    static async findByNationalId(nationalId:string) {
+        return await db.personnel.findFirst({
+            where:{ nationalId:String(nationalId) }
+        })
+    }
+}

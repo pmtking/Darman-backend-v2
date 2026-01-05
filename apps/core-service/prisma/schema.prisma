@@ -43,6 +43,7 @@ model Personnel {
   hireAt       DateTime      @default(now())
   lastLoginAt  DateTime?
   shifts       Shift[]
+  visits       Visit[]
   performances Performance[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -63,4 +64,14 @@ model Performance {
   score        Int       @default(0)   // پیشنهادی: امتیاز عملکرد
   description  String?                 // پیشنهادی: توضیحات عملکرد
   createdAt    DateTime  @default(now())
+}
+
+model Visit {
+  id           Int      @id @default(autoincrement())
+  doctor       Personnel @relation(fields: [doctorId], references: [id])
+  doctorId     Int
+  patientName  String
+  fee          Float    // مبلغی که بیمار پرداخت کرده
+  doctorShare  Float    // مبلغی که سیستم محاسبه کرده و سهم دکتر شده
+  date         DateTime @default(now())
 }

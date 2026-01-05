@@ -5,3 +5,5 @@ const router = Router();
 router.post('/', createPersonnel);
 // router.get('/', getPersonnelList);
 // مسیر ثبت پرسنل جدید
+
+export default router;
